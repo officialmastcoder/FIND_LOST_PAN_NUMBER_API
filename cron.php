@@ -18,7 +18,7 @@ if(mysqli_num_rows($res)>0){
             $pan_number = $response->pan_no;
             $update = mysqli_query($ahk_conn,"UPDATE panfind SET status='success', pan_no='$pan_number' WHERE id='".$row['id']."' ");
         }elseif($response->status =='900' || $response->status =='902' || $response->status =='800' || $response->status =='802' || $response->status =='905' ){
-            $update = mysqli_query($ahk_conn,"UPDATE pan_details SET status='refunded' WHERE id='".$row['id']."' ");
+            $update = mysqli_query($ahk_conn,"UPDATE panfind SET status='refunded' WHERE id='".$row['id']."' ");
         }
     }
 }

@@ -32,7 +32,7 @@ if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
   curl_close($curl);
       $response;
   $resdata = json_decode($response,true);
-  if($resdata['status']!='1'){
+  if($resdata['status']=='1'){
     $date = date('d-m-Y');
     $insert = mysqli_query($ahk_conn,"INSERT INTO `panfind`(`application_no`, `name`, `aadhaar_no`, `dob`, `pan_no`, `status`, `date`) VALUES ('$ack','$name','$aadhaar','$dob','','pending','$date')");
     if($insert){

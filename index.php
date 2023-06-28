@@ -1,3 +1,50 @@
+<?php
+require('database.php');
+$message = "";
+if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
+  $name = $_POST['name'];
+  $dob = $_POST['dob'];
+  $aadhaar = $_POST['aadhaar_no'];
+  
+  
+  $ack = "AHK". rand(1111111111,9999999999);
+  $application_no = base64_encode($ack); // Base 64 Encoded Application Number
+  $apiname = base64_encode($name); // Base 64 Encoded Customer Name
+  $aadhaar_no = base64_encode($aadhaar); // Base 64 Encoded Aadhaar Number
+  $apidob = base64_encode($dob); // Base 64 Encoded Date of birth
+  $ret_wp_no = base64_encode("4554"); // Base 64 Encoded Retailer Whatsaap Number
+  $callback_url = base64_encode("545"); // Base 64 Encoded Webhook URL / CallBack URL
+  
+  $url = 'https://api.apizone.in/v1/services/pan_no/submit.php?application_no='.$application_no.'&name='.$apiname.'&aadhaar_no='.$aadhaar_no.'&dob='.$apidob.'&ret_wp_no='.$ret_wp_no.'&api_key='.$api_key.'&callback_url='.$callback_url;
+  
+  $curl = curl_init();
+  curl_setopt_array($curl, array(
+      CURLOPT_URL => $url,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "GET",
+  ));
+  $response = curl_exec($curl);
+  curl_close($curl);
+      $response;
+  $resdata = json_decode($response,true);
+  if($resdata['status']!='1'){
+    $date = date('d-m-Y');
+    $insert = mysqli_query($ahk_conn,"INSERT INTO `panfind`(`application_no`, `name`, `aadhaar_no`, `dob`, `pan_no`, `status`, `date`) VALUES ('$ack','$name','$aadhaar','$dob','','pending','$date')");
+    if($insert){
+      $message = $resdata['message'] . " Ack no : " . $resdata['application_no'];
+    }
+  }else{
+    $message = $resdata['message'];
+  }
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,14 +106,11 @@
           <div class="row gx-lg-5 align-items-center mb-5">
             <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
               <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
-                The best offer <br>
-                <span style="color: hsl(218, 81%, 75%)">for your business</span>
+                Find Lost Pan Number <br>
+                <span style="color: hsl(218, 81%, 75%)">With Powerful API</span>
               </h1>
               <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Temporibus, expedita iusto veniam atque, magni tempora mollitia
-                dolorum consequatur nulla, neque debitis eos reprehenderit quasi
-                ab ipsum nisi dolorem modi. Quos?
+                Disclaimer: This API Portal Does not any data like name, email, aadhaar number, phone And dob we only Store Application Number for Track The Data from main Server.
               </p>
             </div>
 
@@ -76,67 +120,42 @@
 
               <div class="card bg-glass">
                 <div class="card-body px-4 py-5 px-md-5">
-                  <form>
+                  <form method="POST" action="">
                     <!-- 2 column grid layout with text inputs for the first and last names -->
                     <div class="row">
                       <div class="col-md-6 mb-4">
                         <div class="form-outline">
-                          <input type="text" id="form3Example1" class="form-control">
-                          <label class="form-label" for="form3Example1" style="margin-left: 0px;">First name</label>
+                          <input type="number" id="form3Example1" class="form-control" name="aadhaar_no" placeholder="Aadhaar Number"  required>
+                          <label class="form-label" for="form3Example1" style="margin-left: 0px;">Aadhaar Number</label>
                         <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
                       </div>
                       <div class="col-md-6 mb-4">
                         <div class="form-outline">
-                          <input type="text" id="form3Example2" class="form-control">
-                          <label class="form-label" for="form3Example2" style="margin-left: 0px;">Last name</label>
+                          <input type="text" id="form3Example2" class="form-control" name="name" placeholder="Full Name Here">
+                          <label class="form-label" for="form3Example2" style="margin-left: 0px;">Full Name</label>
                         <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68px;"></div><div class="form-notch-trailing"></div></div></div>
                       </div>
                     </div>
 
-                    <!-- Email input -->
-                    <div class="form-outline mb-4">
-                      <input type="email" id="form3Example3" class="form-control">
-                      <label class="form-label" for="form3Example3" style="margin-left: 0px;">Email address</label>
-                    <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 88.8px;"></div><div class="form-notch-trailing"></div></div></div>
-
-                    <!-- Password input -->
-                    <div class="form-outline mb-4">
-                      <input type="password" id="form3Example4" class="form-control">
-                      <label class="form-label" for="form3Example4" style="margin-left: 0px;">Password</label>
-                    <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 64.8px;"></div><div class="form-notch-trailing"></div></div></div>
-
-                    <!-- Checkbox -->
-                    <div class="form-check d-flex justify-content-center mb-4">
-                      <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked="">
-                      <label class="form-check-label" for="form2Example33">
-                        Subscribe to our newsletter
-                      </label>
+                    <div class="row">
+                      <div class="col-md-6 mb-4">
+                        <div class="form-outline">
+                          <input type="date" id="form3Example1" class="form-control" name="dob" placeholder="30/12/1999">
+                          <label class="form-label" for="form3Example1" style="margin-left: 0px;">Date of Birth</label>
+                        <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
+                      </div>
+                      <div class="col-md-6 mb-4">
+                        <div class="form-outline">
+                          <p><?php echo ($message!="")?  $message : ''; ?></p>
+                      </div>
                     </div>
 
                     <!-- Submit button -->
                     <button type="submit" class="btn btn-primary btn-block mb-4">
-                      Sign up
+                      Submit
                     </button>
 
-                    <!-- Register buttons -->
-                    <div class="text-center">
-                      <p>or sign up with:</p>
-                      <button type="button" class="btn btn-link btn-floating mx-1">
-                        <i class="fab fa-facebook-f"></i>
-                      </button>
-
-                      <button type="button" class="btn btn-link btn-floating mx-1">
-                        <i class="fab fa-google"></i>
-                      </button>
-
-                      <button type="button" class="btn btn-link btn-floating mx-1">
-                        <i class="fab fa-twitter"></i>
-                      </button>
-
-                      <button type="button" class="btn btn-link btn-floating mx-1">
-                        <i class="fab fa-github"></i>
-                      </button>
-                    </div>
+                    
                   </form>
                 </div>
               </div>

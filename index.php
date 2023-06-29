@@ -126,7 +126,7 @@ if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
                 <span style="color: hsl(218, 81%, 75%)">With Powerful API</span>
               </h1>
               <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
-                Disclaimer: This API Portal Does not any data like name, email, aadhaar number, phone And dob we only Store Application Number for Track The Data from main Server.
+                Disclaimer: This API Portal Does not 'store' any data like name, email, aadhaar number, phone And dob we only Store Application Number for Track The Data from main Server.
               </p>
             </div>
 

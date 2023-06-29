@@ -1,4 +1,13 @@
 <?php
+/**
+ * License : GPL (General Public License).
+ * Author: AHK WEB SOLUTIONS
+ * Company : AHK WEB SOLUTIONS
+ * Author-email : admin@ahkwebsolutions.com
+ * Author-contact: +1 5395001134
+ * Project Name: FIND LOST PAN NUMBER USING API
+ * Api Url : https://apizone.in
+ */
 include('database.php');
 ?>
 <!DOCTYPE html>
@@ -57,11 +66,11 @@ if(mysqli_num_rows($res)>0){
 
     </tbody>
 </table>
-        <!-- jQuery library -->
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
-        <!-- Popper JS -->
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-        <!-- Latest compiled JavaScript -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-        </body>
-        </html>
+<!-- jQuery library -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

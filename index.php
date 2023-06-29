@@ -1,7 +1,17 @@
 <?php
+/**
+ * License : GPL (General Public License).
+ * Author: AHK WEB SOLUTIONS
+ * Company : AHK WEB SOLUTIONS
+ * Author-email : admin@ahkwebsolutions.com
+ * Author-contact: +1 5395001134
+ * Project Name: FIND LOST PAN NUMBER USING API
+ * Api Url : https://apizone.in
+ */
 require('database.php');
 $message = "";
 if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
+  // getting values
   $name = mysqli_real_escape_string($ahk_conn,$_POST['name']);
   $dob = mysqli_real_escape_string($ahk_conn,$_POST['dob']);
   $aadhaar = mysqli_real_escape_string($ahk_conn,$_POST['aadhaar_no']);

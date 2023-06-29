@@ -20,7 +20,7 @@ if(!$ahk_conn){
 }
 
 // define Api Key
-$api_key = "ijij88787"; // API Key Here
+$api_key = "c516587a6b188f166d133db0f104b50f"; // API Key Here
 // Define Admin Secret key for submitting data 
 $pass = "123";
 // generate hash of this secret

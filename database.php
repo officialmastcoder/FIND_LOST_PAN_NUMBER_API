@@ -8,6 +8,8 @@ if(!$ahk_conn){
     echo "Database Not Connected!";
 }
 
-$api_key = ""; // API Key Here
+$api_key = "ijij88787"; // API Key Here
+$pass = "123";
+$main_secret  = password_hash($pass,PASSWORD_DEFAULT);
 
 ?>

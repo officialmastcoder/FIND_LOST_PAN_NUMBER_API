@@ -36,7 +36,7 @@ if(mysqli_num_rows($res)>0){
                     <td><?php echo $row['application_no']; ?></td>
                     <td><?php echo $row['name']; ?></td>
                     <td><?php echo $row['aadhaar_no']; ?></td>
-                    <td><?php echo $row['pan_no']; ?></td>
+                    <td <?php echo ($row['status']=='success')? "class='text-success' style='font-weight:bold;'": ''; ?>><?php echo $row['pan_no']; ?></td>
                     <td><?php 
                     if($row['status']=='success'){
                         echo "Success";

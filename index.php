@@ -2,45 +2,51 @@
 require('database.php');
 $message = "";
 if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
-  $name = $_POST['name'];
-  $dob = $_POST['dob'];
-  $aadhaar = $_POST['aadhaar_no'];
+  $name = mysqli_real_escape_string($ahk_conn,$_POST['name']);
+  $dob = mysqli_real_escape_string($ahk_conn,$_POST['dob']);
+  $aadhaar = mysqli_real_escape_string($ahk_conn,$_POST['aadhaar_no']);
+  $admin_secret = mysqli_real_escape_string($ahk_conn,$_POST['admin_secret']);
   
-  
-  $ack = "AHK". rand(1111111111,9999999999);
-  $application_no = base64_encode($ack); // Base 64 Encoded Application Number
-  $apiname = base64_encode($name); // Base 64 Encoded Customer Name
-  $aadhaar_no = base64_encode($aadhaar); // Base 64 Encoded Aadhaar Number
-  $apidob = base64_encode($dob); // Base 64 Encoded Date of birth
-  $ret_wp_no = base64_encode("4554"); // Base 64 Encoded Retailer Whatsaap Number
-  $callback_url = base64_encode("545"); // Base 64 Encoded Webhook URL / CallBack URL
-  
-  $url = 'https://api.apizone.in/v1/services/pan_no/submit.php?application_no='.$application_no.'&name='.$apiname.'&aadhaar_no='.$aadhaar_no.'&dob='.$apidob.'&ret_wp_no='.$ret_wp_no.'&api_key='.$api_key.'&callback_url='.$callback_url;
-  
-  $curl = curl_init();
-  curl_setopt_array($curl, array(
-      CURLOPT_URL => $url,
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_ENCODING => "",
-      CURLOPT_MAXREDIRS => 10,
-      CURLOPT_TIMEOUT => 0,
-      CURLOPT_FOLLOWLOCATION => true,
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_CUSTOMREQUEST => "GET",
-  ));
-  $response = curl_exec($curl);
-  curl_close($curl);
-      $response;
-  $resdata = json_decode($response,true);
-  if($resdata['status']=='1'){
-    $date = date('d-m-Y');
-    $insert = mysqli_query($ahk_conn,"INSERT INTO `panfind`(`application_no`, `name`, `aadhaar_no`, `dob`, `pan_no`, `status`, `date`) VALUES ('$ack','$name','$aadhaar','$dob','','pending','$date')");
-    if($insert){
-      $message = $resdata['message'] . " Ack no : " . $resdata['application_no'];
-    }
+  if(password_verify($admin_secret,$main_secret)==true){
+      $ack = "AHK". time().rand(111111,999999);
+      $application_no = base64_encode($ack); // Base 64 Encoded Application Number
+      $apiname = base64_encode($name); // Base 64 Encoded Customer Name
+      $aadhaar_no = base64_encode($aadhaar); // Base 64 Encoded Aadhaar Number
+      $apidob = base64_encode($dob); // Base 64 Encoded Date of birth
+      $ret_wp_no = base64_encode("4554"); // Base 64 Encoded Retailer Whatsaap Number
+      $callback_url = base64_encode("545"); // Base 64 Encoded Webhook URL / CallBack URL
+      
+      $url = 'https://api.apizone.in/v1/services/pan_no/submit.php?application_no='.$application_no.'&name='.$apiname.'&aadhaar_no='.$aadhaar_no.'&dob='.$apidob.'&ret_wp_no='.$ret_wp_no.'&api_key='.$api_key.'&callback_url='.$callback_url;
+      
+      $curl = curl_init();
+      curl_setopt_array($curl, array(
+          CURLOPT_URL => $url,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "GET",
+      ));
+      $response = curl_exec($curl);
+      curl_close($curl);
+          $response;
+      $resdata = json_decode($response,true);
+      if($resdata['status']=='1'){
+        $date = date('d-m-Y');
+        $insert = mysqli_query($ahk_conn,"INSERT INTO `panfind`(`application_no`, `name`, `aadhaar_no`, `dob`, `pan_no`, `status`, `date`) VALUES ('$ack','$name','$aadhaar','$dob','','pending','$date')");
+        if($insert){
+          $message = "<p style='color:green;font-weight:bold;'>".$resdata['message'] . " Ack no : " . $resdata['application_no']."</p>";
+        }
+      }else{
+        $message = "<p style='color:red;font-weight:bold;'> ".$resdata['message']."</p>";
+      }
   }else{
-    $message = $resdata['message'];
+    $message = "<p style='color:red;font-weight:bold;'>Admin Secret Is Invalid! Please Enter Valid Admin Secret!</p>";
   }
+  
+
 }
 
 
@@ -131,7 +137,7 @@ if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
                       </div>
                       <div class="col-md-6 mb-4">
                         <div class="form-outline">
-                          <input type="text" id="form3Example2" class="form-control" name="name" placeholder="Full Name Here">
+                          <input required type="text" id="form3Example2" class="form-control" name="name" placeholder="Full Name Here">
                           <label class="form-label" for="form3Example2" style="margin-left: 0px;">Full Name</label>
                         <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68px;"></div><div class="form-notch-trailing"></div></div></div>
                       </div>
@@ -140,14 +146,24 @@ if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
                     <div class="row">
                       <div class="col-md-6 mb-4">
                         <div class="form-outline">
-                          <input type="date" id="form3Example1" class="form-control" name="dob" placeholder="30/12/1999">
+                          <input required type="date" id="form3Example1" class="form-control" name="dob" placeholder="30/12/1999">
                           <label class="form-label" for="form3Example1" style="margin-left: 0px;">Date of Birth</label>
                         <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
                       </div>
+
                       <div class="col-md-6 mb-4">
                         <div class="form-outline">
-                          <p><?php echo ($message!="")?  $message : ''; ?></p>
+                          <input required type="password" id="form3Example1" class="form-control" name="admin_secret" placeholder="Enter Admin Secret">
+                          <label class="form-label" for="form3Example1" style="margin-left: 0px;">Admin Secret</label>
+                        <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
                       </div>
+
+                      
+                    </div>
+
+                    <div class="row">
+                      <div class="form-outline">
+                        <?php echo ($message!="")?  $message : ''; ?>
                     </div>
 
                     <!-- Submit button -->

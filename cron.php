@@ -8,7 +8,7 @@ if(mysqli_num_rows($res)>0){
     
         $application_no = $row['application_no'];
         $application_no = base64_encode($application_no);
-        $api_key = $webdata["api_key"];
+        $api_key = $api_key;
         $url = "https://api.apizone.in/v1/services/pan_no/track.php?application_no=$application_no&api_key=$api_key";
         
         $result = file_get_contents($url);

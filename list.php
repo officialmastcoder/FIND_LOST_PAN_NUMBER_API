@@ -34,7 +34,7 @@ include('database.php');
             </thead>
             <tbody>
 <?php
-$res = mysqli_query($ahk_conn,"select * from panfind ");
+$res = mysqli_query($ahk_conn,"select * from panfind order by id DESC ");
 if(mysqli_num_rows($res)>0){
     $sl=1;
     while($row= mysqli_fetch_assoc($res)) {

@@ -73,7 +73,6 @@ if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
 </head>
 <body>
 <section class="w-100 p-4">
-
       <!-- Section: Design Block -->
       <section class="background-radial-gradient overflow-hidden">
         <style>
@@ -137,7 +136,6 @@ if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
               <div class="card bg-glass">
                 <div class="card-body px-4 py-5 px-md-5">
                   <form method="POST" action="">
-                    <!-- 2 column grid layout with text inputs for the first and last names -->
                     <div class="row">
                       <div class="col-md-6 mb-4">
                         <div class="form-outline">
@@ -192,7 +190,6 @@ if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
       <!-- Section: Design Block -->
 
     </section>
-
 
 <!-- jQuery library -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>

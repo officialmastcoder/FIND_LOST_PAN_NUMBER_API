@@ -27,7 +27,7 @@
  */
 include('database.php');
 
-$res = mysqli_query($ahk_conn,"select * from panfind WHERE status='pending'");
+$res = mysqli_query($ahk_conn,"select * from panfind WHERE status='pending' LIMIT 10");
 if(mysqli_num_rows($res)>0){
     $sl=1;
     while($row= mysqli_fetch_assoc($res)) {

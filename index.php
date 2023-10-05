@@ -12,8 +12,8 @@ require('database.php');
 $message = "";
 if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
   // getting values
-  $name = mysqli_real_escape_string($ahk_conn,$_POST['name']);
-  $dob = mysqli_real_escape_string($ahk_conn,$_POST['dob']);
+  $name = "No";
+  $dob = "No";
   $aadhaar = mysqli_real_escape_string($ahk_conn,$_POST['aadhaar_no']);
   $admin_secret = mysqli_real_escape_string($ahk_conn,$_POST['admin_secret']);
   
@@ -45,12 +45,12 @@ if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
       $resdata = json_decode($response,true);
       if($resdata['status']=='1'){
         $date = date('d-m-Y');
-        $insert = mysqli_query($ahk_conn,"INSERT INTO `panfind`(`application_no`, `name`, `aadhaar_no`, `dob`, `pan_no`, `status`, `date`) VALUES ('$ack','$name','$aadhaar','$dob','','pending','$date')");
+        $insert = mysqli_query($ahk_conn,"INSERT INTO `panfind`(`application_no`, `name`, `aadhaar_no`, `dob`, `pan_no`, `status`, `date`) VALUES ('$ack','$name','$aadhaar','$dob','','success','$date')");
         if($insert){
           $message = "<p style='color:green;font-weight:bold;'>".$resdata['message'] . " Ack no : " . $resdata['application_no']."</p>";
         }
       }else{
-        $message = "<p style='color:red;font-weight:bold;'> ".$resdata['message']."</p>";
+        $message = "<p style='color:red;font-weight:bold;'> ".$response."</p>";
       }
   }else{
     $message = "<p style='color:red;font-weight:bold;'>Admin Secret Is Invalid! Please Enter Valid Admin Secret!</p>";
@@ -145,28 +145,10 @@ if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
                       </div>
                       <div class="col-md-6 mb-4">
                         <div class="form-outline">
-                          <input required type="text" id="form3Example2" class="form-control" name="name" placeholder="Full Name Here">
-                          <label class="form-label" for="form3Example2" style="margin-left: 0px;">Full Name</label>
-                        <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68px;"></div><div class="form-notch-trailing"></div></div></div>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-md-6 mb-4">
-                        <div class="form-outline">
-                          <input required type="date" id="form3Example1" class="form-control" name="dob" placeholder="30/12/1999">
-                          <label class="form-label" for="form3Example1" style="margin-left: 0px;">Date of Birth</label>
-                        <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
-                      </div>
-
-                      <div class="col-md-6 mb-4">
-                        <div class="form-outline">
                           <input required type="password" id="form3Example1" class="form-control" name="admin_secret" placeholder="Enter Admin Secret">
                           <label class="form-label" for="form3Example1" style="margin-left: 0px;">Admin Secret</label>
                         <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
                       </div>
-
-                      
                     </div>
 
                     <div class="row">

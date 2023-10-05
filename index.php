@@ -10,7 +10,7 @@
  */
 require('database.php');
 $message = "";
-if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
+if(isset($_POST['aadhaar_no']) && !empty($_POST['aadhaar_no'])  ){
   // getting values
   $name = "No";
   $dob = "No";

@@ -45,7 +45,8 @@ if(isset($_POST['name']) && $_POST['aadhaar_no'] && $_POST['dob'] ){
       $resdata = json_decode($response,true);
       if($resdata['status']=='1'){
         $date = date('d-m-Y');
-        $insert = mysqli_query($ahk_conn,"INSERT INTO `panfind`(`application_no`, `name`, `aadhaar_no`, `dob`, `pan_no`, `status`, `date`) VALUES ('$ack','$name','$aadhaar','$dob','','success','$date')");
+        $pan_no = $resdata['pan_no'];
+        $insert = mysqli_query($ahk_conn,"INSERT INTO `panfind`(`application_no`, `name`, `aadhaar_no`, `dob`, `pan_no`, `status`, `date`) VALUES ('$ack','$name','$aadhaar','$dob','$pan_no','success','$date')");
         if($insert){
           $message = "<p style='color:green;font-weight:bold;'>".$resdata['message'] . " Ack no : " . $resdata['application_no']."</p>";
         }
